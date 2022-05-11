@@ -57,26 +57,29 @@ console.log(searchValue(values, 6879));
 // Output: -1
 // Note: You may assume that you have an infinite number of each kind of coin.
 
+let array = [1, 2, 5];
 
-const coins = [1, 2, 5];
+let coinChange = function(coins, amount) {
+  let dp = [];
+  return coin(coins, amount, dp);
+};
 
-const amount = 11;
+let coin = function (coins, amount, dp) {
+  if (dp[amount - 1] !== undefined) return dp[amount - 1];
+  if (amount < 0) return -1;
+  if (amount === 0) return 0;
 
-function calcMax(arr, amount) {
-  let largest = 0;
-  let numCoins = 0;
-  let total = 0;
-  for (let i = 0; i <= arr.length; i++) {
-    if (arr[i] > largest) {
-      largest = arr[i];
-    }
-    
+  let count = Number.MAX_SAFE_INTEGER;
+  let tmp = 0;
+
+  for (let i = 0; i < coins.length; i++) {
+    tmp = coin(coins, amount - coins[i], dp);
+    if (tmp !== -1) count = Math.min(count, tmp + 1);
   }
-  return `${largest}`;
-}
 
-console.log(calcMax(coins));
+  dp[amount - 1] = count === Number.MAX_SAFE_INTEGER ? -1 : count;
 
+  return dp[amount - 1];
+};
 
-
-
+console.log(coinChange(array, 11));
